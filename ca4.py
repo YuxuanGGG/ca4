@@ -5,6 +5,7 @@ import logging
 import logging.handlers
 
 def setup_papertrail_logging():
+    # Replace 'logs5.papertrailapp.com' and '20304' with your actual Papertrail log destination and port
     papertrail_handler = logging.handlers.SysLogHandler(address=('logs5.papertrailapp.com', 20304))
     formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s', datefmt='%b %d %H:%M:%S')
     papertrail_handler.setFormatter(formatter)
@@ -75,13 +76,14 @@ if "last_input" not in st.session_state:
     st.session_state.last_input = ""
     
 # Accept user input
-prompt = st.text_input("Bitte geben Sie Ihren Text im richtigen Format ein.")
-if prompt and prompt != st.session_state.last_input:
-    st.session_state.last_input = prompt
+if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."):
+    # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
-    logger.info(f"User input logged: {prompt}")  # Log only new input
+
+    logger.info(f"User input logged: {prompt}")  # 标注 - 添加这行代码来调用记录函数
 
     found_response = False
     for pattern, response in keyword_to_response.items():
@@ -93,13 +95,18 @@ if prompt and prompt != st.session_state.last_input:
         assistant_response = "Es tut mir leid, ich kann Ihre Eingabe nicht verarbeiten."
 
     time.sleep(2)
-    response_placeholder.text(current_text)
-    
-    
+    response_placeholder = st.empty()
+
     current_text = ""
     for word in assistant_response.split():
+        # Update the placeholder with the current text plus the new word
         current_text += word + " "
-        st.text(current_text)
-        time.sleep(0.05)  # Simulate typing delay
+        response_placeholder.text(current_text)
+        # Delay between words to simulate typing
+        time.sleep(0.05)  # Delay for 0.5 seconds between words
+    response_placeholder.empty()
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        st.markdown(assistant_response)
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
