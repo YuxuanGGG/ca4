@@ -93,6 +93,8 @@ if prompt and prompt != st.session_state.last_input:
         assistant_response = "Es tut mir leid, ich kann Ihre Eingabe nicht verarbeiten."
 
     time.sleep(2)
+    response_placeholder.text(current_text)
+    
     
     current_text = ""
     for word in assistant_response.split():
