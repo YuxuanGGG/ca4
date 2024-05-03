@@ -74,10 +74,6 @@ for message in st.session_state.messages:
 
 if "last_input" not in st.session_state:
     st.session_state.last_input = ""
-
-if user_input and user_input != st.session_state.last_input:
-    st.session_state.last_input = user_input
-    logger.info(f"User input logged: {user_input}")
     
 # Accept user input
 prompt = st.text_input("Bitte geben Sie Ihren Text im richtigen Format ein.")
