@@ -2,8 +2,19 @@ import streamlit as st
 import time
 import re
 import logging
-import os
-from datetime import datetime
+import logging.handlers
+
+def setup_papertrail_logging():
+    # Replace 'logs5.papertrailapp.com' and '20304' with your actual Papertrail log destination and port
+    papertrail_handler = logging.handlers.SysLogHandler(address=('logs5.papertrailapp.com', 20304))
+    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s', datefmt='%b %d %H:%M:%S')
+    papertrail_handler.setFormatter(formatter)
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.addHandler(papertrail_handler)
+    return logger
+
+logger = setup_papertrail_logging()
 
 st.sidebar.header("Hinweis zu den Stichwörtern:")
 st.sidebar.markdown("""
@@ -37,25 +48,7 @@ st.sidebar.markdown("""
     - Fühlt sich oft nach der Arbeit angestrengt
 """)
 
-logging.basicConfig(filename='logs/user_inputs.log',
-                    level=logging.INFO,
-                    format='%(asctime)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
 
-def log_user_input(input_text):
-    # 记录日志
-    logging.info(input_text)
-
-def show_logs():
-    log_file_path = 'logs/user_inputs.log'
-    if os.path.exists(log_file_path):
-        with open(log_file_path, 'r', encoding='utf-8') as file:
-            st.text_area("Log output", file.read(), height=300)
-    else:
-        st.write("No logs found.")
-
-if st.button('Show Logs'):
-    show_logs()
 
 keyword_to_response = {
     'präventive maßnahmen diskutieren:|präventive maßnahmen diskutieren': "Verstanden. Ich benötige genauere Informationen über Ihre Lebensgewohnheiten. Wie ernähren Sie sich? Wie viel Salz nehmen Sie beispielweise täglich zu sich?",
@@ -87,7 +80,7 @@ if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    log_user_input(prompt)
+    logger.info(f"User input logged: {prompt}")  # 标注 - 添加这行代码来调用记录函数
 
     found_response = False
     for pattern, response in keyword_to_response.items():
@@ -114,4 +107,3 @@ if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."
         st.markdown(assistant_response)
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-
