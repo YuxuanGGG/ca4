@@ -72,6 +72,9 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+if "last_input" not in st.session_state:
+    st.session_state.last_input = ""
+    
 # Accept user input
 if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."):
     # Add user message to chat history
