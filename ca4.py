@@ -76,10 +76,10 @@ if "last_input" not in st.session_state:
     st.session_state.last_input = ""
     
 # Accept user input
-prompt = st.text_input("Bitte geben Sie Ihren Text im richtigen Format ein.")
-if prompt and prompt != st.session_state.last_input:
-    st.session_state.last_input = prompt
+if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."):
+    # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
 
