@@ -47,8 +47,6 @@ st.sidebar.markdown("""
     - Fühlt sich oft nach der Arbeit angestrengt
 """)
 
-
-
 keyword_to_response = {
     'präventive maßnahmen diskutieren:|präventive maßnahmen diskutieren': "Verstanden. Ich benötige genauere Informationen über Ihre Lebensgewohnheiten. Wie ernähren Sie sich? Wie viel Salz nehmen Sie beispielweise täglich zu sich?",
     "empfohlene salzaufnahme:|empfohlene salzaufnahme": "Verstehe. Sie müssen Ihre tägliche Salzaufnahme auf maximal 5 Gramm beschränken, was etwa einem Teelöffel entspricht. Wie ist außerdem das Verhältnis von Obst, Gemüse und Fetten in Ihrer täglichen Ernährung?",
