@@ -17,7 +17,7 @@ logger = setup_papertrail_logging()
 
 st.sidebar.header("Hinweis zu den Stichwörtern:")
 st.sidebar.markdown("""
-1. Präventive Maßnahmen diskutieren
+1. Maßnahme
 2. Empfohlene Salzaufnahme
 3. Empfehlungen für Gemüse und Obst
 4. Empfehlungen zur Trainingshäufigkeit
