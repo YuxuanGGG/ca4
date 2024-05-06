@@ -18,10 +18,10 @@ logger = setup_papertrail_logging()
 st.sidebar.header("Hinweis zu den Stichwörtern:")
 st.sidebar.markdown("""
 1. Maßnahme
-2. Empfohlene Salzaufnahme
-3. Empfehlungen für Gemüse und Obst
-4. Empfehlungen zur Trainingshäufigkeit
-5. Schrittweise Integration von Übungen
+2. Salz
+3. Ernährung
+4. Training
+5. Feierabend
 6. Abschluss
 """)
 
@@ -30,7 +30,7 @@ st.sidebar.markdown("""
 Stichwörter: Text.
 
 Zum Beispiel:
-- **Präventive Maßnahmen diskutieren**: Ich leide in meiner Familie an Bluthochdruck und hätte gerne Ratschläge zur Vorbeugung.
+- **Maßnahme**: Ich leide in meiner Familie an Bluthochdruck und hätte gerne Ratschläge zur Vorbeugung.
 """, unsafe_allow_html=True)
 
 st.sidebar.header("Persona: Jim")
@@ -48,11 +48,11 @@ st.sidebar.markdown("""
 """)
 
 keyword_to_response = {
-    'präventive maßnahmen diskutieren:|präventive maßnahmen diskutieren': "Verstanden. Ich benötige genauere Informationen über Ihre Lebensgewohnheiten. Wie ernähren Sie sich? Wie viel Salz nehmen Sie beispielweise täglich zu sich?",
-    "empfohlene salzaufnahme:|empfohlene salzaufnahme": "Verstehe. Sie müssen Ihre tägliche Salzaufnahme auf maximal 5 Gramm beschränken, was etwa einem Teelöffel entspricht. Wie ist außerdem das Verhältnis von Obst, Gemüse und Fetten in Ihrer täglichen Ernährung?",
-    "empfehlungen für gemüse und obst:|empfehlungen für gemüse und obst": "Ich verstehe. Sie müssen mehr frisches Gemüse und Obst essen. Bei der Auswahl von Fleischprodukten müssen Sie sich auf hochwertige Fette konzentrieren. Bewegen Sie sich regelmäßig oder treiben Sie Sport?",
-    "empfehlungen zur trainingshäufigkeit:|empfehlungen zur trainingshäufigkeit": "Verstanden. Sie müssen drei Mal pro Woche für 30 bis 45 Minuten ein regelmäßiges Ausdauertraining absolvieren. Gibt es bestimmte Zeiten, die für Sie am besten wären, um das Training in Ihren Alltag einzuplanen? Beispielsweise nach der Arbeit?",
-    "schrittweise integration von übungen:|schrittweise integration von übungen": "Das verstehe ich. Aber Sie müssen die körperliche Aktivität schrittweise in Ihren Alltag integrieren. Kann ich Ihnen noch mit etwas anderem behilflich sein?",
+    'maßnahme:|maßnahme': "Verstanden. Ich benötige genauere Informationen über Ihre Lebensgewohnheiten. Wie ernähren Sie sich? Wie viel Salz nehmen Sie beispielweise täglich zu sich?",
+    "salz:|salz": "Verstehe. Sie müssen Ihre tägliche Salzaufnahme auf maximal 5 Gramm beschränken, was etwa einem Teelöffel entspricht. Wie ist außerdem das Verhältnis von Obst, Gemüse und Fetten in Ihrer täglichen Ernährung?",
+    "ernährung:|ernährung": "Ich verstehe. Sie müssen mehr frisches Gemüse und Obst essen. Bei der Auswahl von Fleischprodukten müssen Sie sich auf hochwertige Fette konzentrieren. Bewegen Sie sich regelmäßig oder treiben Sie Sport?",
+    "training:|training": "Verstanden. Sie müssen drei Mal pro Woche für 30 bis 45 Minuten ein regelmäßiges Ausdauertraining absolvieren. Gibt es bestimmte Zeiten, die für Sie am besten wären, um das Training in Ihren Alltag einzuplanen? Beispielsweise nach der Arbeit?",
+    "feierabend:|feierabend": "Das verstehe ich. Aber Sie müssen die körperliche Aktivität schrittweise in Ihren Alltag integrieren. Kann ich Ihnen noch mit etwas anderem behilflich sein?",
     "abschluss:|abschluss": " Kein Problem. Bitte beachten Sie, dass Sie sich bei konkreten medizinischen Fragen an einen Facharzt wenden müssen. Ich wünsche Ihnen gute Gesundheit!"
 }
 
@@ -75,7 +75,7 @@ if prompt := st.chat_input("Bitte geben Sie Ihren Text im richtigen Format ein."
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    logger.info(f"User input logged: {prompt}")  # 标注 - 添加这行代码来调用记录函数
+    logger.info(f"User input logged: {prompt}")  
 
     found_response = False
     for pattern, response in keyword_to_response.items():
